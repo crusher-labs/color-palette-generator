@@ -1,179 +1,134 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full" data-theme="minimal" data-theme-lock="minimal" data-mode="light">
+<html lang="en"
+      data-default-theme="minimal"
+      data-theme-lock="minimal"
+      data-default-mode="light"
+      data-default-brand="#0ea5e9">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Color Palette Generator</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = { darkMode: 'class', }
-    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.6/dist/crusher-ui.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.6/dist/themes/minimal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.6/dist/static/tool-shell.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.6/dist/static/tool-shell.js"></script>
     <style>
         body { font-family: 'Inter', sans-serif; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; }
-        .swatch { transition: transform 0.2s; }
-        .swatch:hover { transform: scale(1.05); }
-        #hub-bubble { position: fixed; bottom: 20px; right: 20px; z-index: 1000; width: 56px; height: 56px; background-color: #0ea5e9; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out; }
-        #hub-bubble:hover { transform: scale(1.1); background-color: #0284c7; }
-    </style>
-    <script>
-        if ((() => { try { const prefs = JSON.parse(localStorage.getItem('crusher_prefs') || '{}'); return localStorage.getItem('crusher_tools_mode_contract') === 'style-switcher-v3' && prefs.mode === 'dark'; } catch { return false; } })()) { document.documentElement.classList.add('dark'); document.documentElement.setAttribute('data-mode', 'dark') } else { document.documentElement.classList.remove('dark'); document.documentElement.setAttribute('data-mode', 'light') }
-    </script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.3/dist/crusher-ui.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.3/dist/themes/minimal.css">
-    <style id="crusher-tools-framework-bridge">
-        :root {
-            --crusher-style-switcher-top: var(--crusher-spacing-6);
-            --crusher-style-switcher-width: 16.5rem;
-            --crusher-style-switcher-bg: color-mix(in srgb, var(--crusher-background-surface) 94%, transparent);
-            --crusher-style-switcher-shadow: var(--crusher-shadow-xl);
-            --crusher-style-switcher-icon-shadow: var(--crusher-shadow-md);
-            --crusher-style-switcher-color-gap: var(--crusher-spacing-2);
-            --crusher-style-switcher-color-justify: flex-start;
+        .tool-mono { font-family: 'JetBrains Mono', monospace; }
+        .tool-card {
+            max-width: 42rem;
+            margin-inline: auto;
+            padding: var(--crusher-spacing-6);
+            display: grid;
+            gap: var(--crusher-spacing-6);
         }
-        html[data-mode="dark"] { color-scheme: dark; }
-                #theme-toggle { display: none !important; }
-        body { background: radial-gradient(circle at top left, color-mix(in srgb, var(--crusher-color-brand-primary) 14%, transparent), transparent 28rem), var(--crusher-background-canvas) !important; color: var(--crusher-text-primary) !important; }
-        h1, h2, h3 { color: var(--crusher-text-primary) !important; }
-        p, label, .text-slate-400, .text-slate-500, .text-slate-600, .dark\:text-slate-400, .dark\:text-slate-500 { color: var(--crusher-text-secondary) !important; }
-        .text-sky-400, .text-sky-500, .dark\:text-sky-400, a:not(.tool-card):not(#hub-bubble) { color: var(--crusher-color-brand-primary) !important; }
-        .tool-card, main.bg-white, .bg-white, .bg-slate-50, .bg-slate-100, .dark .dark\:bg-slate-700, .dark .dark\:bg-slate-800 { background-color: var(--crusher-background-surface) !important; border-color: var(--crusher-border-primary) !important; box-shadow: var(--crusher-shadow-lg) !important; }
-        input, textarea, select, .dark .dark\:bg-slate-700:is(input, textarea, select) { background-color: var(--crusher-background-muted) !important; color: var(--crusher-text-primary) !important; border-color: var(--crusher-border-primary) !important; }
-        input:focus, textarea:focus, select:focus { border-color: var(--crusher-color-brand-primary) !important; box-shadow: 0 0 0 var(--crusher-focus-width) color-mix(in srgb, var(--crusher-color-brand-primary) 26%, transparent) !important; }
-        button:not(#theme-toggle):not(.style-switcher-toggler):not(.day-night):not(.swatch):not(.dialect-btn), .case-btn { background-color: color-mix(in srgb, var(--crusher-color-brand-primary) 12%, var(--crusher-background-surface)) !important; color: var(--crusher-text-primary) !important; border-color: color-mix(in srgb, var(--crusher-color-brand-primary) 28%, var(--crusher-border-primary)) !important; }
-        button:not(#theme-toggle):not(.style-switcher-toggler):not(.day-night):not(.swatch):not(.dialect-btn):hover, .case-btn:hover, .tool-card:hover { background-color: color-mix(in srgb, var(--crusher-color-brand-primary) 18%, var(--crusher-background-surface)) !important; border-color: var(--crusher-color-brand-primary) !important; }
-        #hub-bubble { background-color: var(--crusher-color-brand-primary) !important; box-shadow: var(--crusher-shadow-lg) !important; }
-        #hub-bubble:hover { background-color: color-mix(in srgb, var(--crusher-color-brand-primary) 82%, black) !important; transform: translateY(-2px) scale(1.03) !important; }
-</style>
+        .tool-color-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--crusher-spacing-4);
+        }
+        .tool-color-picker {
+            inline-size: 6rem;
+            block-size: 4rem;
+            padding: 0;
+            border: 0;
+            border-radius: var(--crusher-radius-md);
+            background: transparent;
+            cursor: pointer;
+        }
+        .tool-hex {
+            inline-size: 8rem;
+            text-align: center;
+        }
+        .tool-mode-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: var(--crusher-spacing-2);
+        }
+        .tool-mode-btn {
+            padding-inline: var(--crusher-spacing-4);
+            padding-block: var(--crusher-spacing-1);
+            border-radius: var(--crusher-radius-full);
+            border: 1px solid var(--crusher-border-primary);
+            background: transparent;
+            color: var(--crusher-text-primary);
+            font-size: var(--crusher-font-size-sm);
+            cursor: pointer;
+            transition: border-color 0.15s ease, background-color 0.15s ease;
+        }
+        .tool-mode-btn:hover,
+        .tool-mode-btn[aria-pressed="true"] {
+            border-color: var(--crusher-color-brand-primary);
+            background: color-mix(in srgb, var(--crusher-color-brand-primary) 12%, transparent);
+        }
+        .tool-palette {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: var(--crusher-spacing-2);
+            min-block-size: 6.5rem;
+        }
+        .tool-swatch {
+            block-size: 4rem;
+            border-radius: var(--crusher-radius-lg);
+            box-shadow: var(--crusher-shadow-md);
+            cursor: pointer;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: var(--crusher-spacing-2);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: var(--crusher-font-size-xs);
+            font-weight: 700;
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+            transition: transform 0.2s ease;
+        }
+        .tool-swatch:hover { transform: scale(1.05); }
+    </style>
 </head>
-<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 flex flex-col items-center justify-center min-h-screen p-4 antialiased transition-colors duration-300">
-    <div class="absolute top-4 right-4 sm:top-6 sm:right-6 z-10">
-        <button id="theme-toggle" type="button" title="Toggle light/dark mode" class="bg-white dark:bg-slate-800 p-3 rounded-full text-slate-500 dark:text-slate-400 hover:text-sky-500 dark:hover:text-sky-400 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors duration-200 shadow-md">
-            <svg id="theme-toggle-sun-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-sun hidden"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-            <svg id="theme-toggle-moon-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-moon hidden"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-        </button>
-    </div>
-    <div class="w-full max-w-2xl">
-        <header class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-slate-900 dark:text-white">Color Palette Generator</h1>
-            <p class="text-slate-600 dark:text-slate-400 mt-2">Generate color schemes from a base color.</p>
+<body class="crusher-tool-page">
+    <main class="crusher-tool-shell">
+        <header class="crusher-tool-header">
+            <h1 class="crusher-tool-title">Color Palette Generator</h1>
+            <p class="crusher-tool-lede">Generate color schemes from a base color.</p>
         </header>
-        <div class="bg-white dark:bg-slate-800 rounded-xl shadow-xl dark:shadow-2xl border border-slate-200 dark:border-slate-700 p-6">
-            <div class="space-y-6">
-                <div class="flex items-center justify-center gap-4">
-                    <input type="color" id="base-color" value="#0ea5e9" class="h-16 w-24 rounded cursor-pointer border-0 p-0 bg-transparent">
-                    <input type="text" id="hex-input" value="#0ea5e9" class="w-32 bg-slate-100 dark:bg-slate-700 text-slate-800 dark:text-white rounded-md p-2 border border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-1 focus:ring-sky-500 font-mono">
-                </div>
-                <div class="flex justify-center flex-wrap gap-2">
-                    <button id="comp-btn" class="px-4 py-1 rounded-full text-sm border border-slate-300 dark:border-slate-600 hover:border-sky-500">Complementary</button>
-                    <button id="analog-btn" class="px-4 py-1 rounded-full text-sm border border-slate-300 dark:border-slate-600 hover:border-sky-500">Analogous</button>
-                    <button id="triad-btn" class="px-4 py-1 rounded-full text-sm border border-slate-300 dark:border-slate-600 hover:border-sky-500">Triadic</button>
-                </div>
-                <div id="palette" class="grid grid-cols-5 gap-2 min-h-[100px]"></div>
+
+        <section class="crusher-tool-surface tool-card">
+            <div class="tool-color-row">
+                <input type="color" id="base-color" value="#0ea5e9" class="tool-color-picker">
+                <input type="text" id="hex-input" value="#0ea5e9" class="crusher-tool-control tool-mono tool-hex">
             </div>
-        </div>
-    </div>
-    <a href="https://tools.muhammadhassaanjaved.com/" id="hub-bubble" title="View All Tools" target="_blank" rel="noopener noreferrer"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></a>
-    <crusher-style-switcher default-theme="minimal" hide-themes hide-theme-color></crusher-style-switcher>
-    <script id="crusher-minimal-mode-lock">
-      (() => {
-        const root = document.documentElement;
-        const CONTRACT_VERSION = 'style-switcher-v3';
-        const DEFAULT_BRAND = '#0ea5e9';
-        const SWITCHER_COLORS = {
-          sky: '#0ea5e9',
-          emerald: '#10b981',
-          violet: '#8b5cf6',
-          orange: '#f97316',
-          pink: '#ec4899'
-        };
-        const readPrefs = () => {
-          try { return JSON.parse(localStorage.getItem('crusher_prefs') || '{}'); } catch { return {}; }
-        };
-        const writePrefs = (prefs) => {
-          try { localStorage.setItem('crusher_prefs', JSON.stringify(prefs)); } catch {}
-        };
-        const normalizeMode = (mode) => mode === 'dark' ? 'dark' : 'light';
-        const ensurePrefs = (forcedMode) => {
-          const prefs = readPrefs();
-          const currentContract = (() => { try { return localStorage.getItem('crusher_tools_mode_contract'); } catch { return ''; } })();
-          if (currentContract !== CONTRACT_VERSION) {
-            prefs.mode = 'light';
-            try { localStorage.setItem('crusher_tools_mode_contract', CONTRACT_VERSION); } catch {}
-          } else if (forcedMode === 'dark' || forcedMode === 'light') {
-            prefs.mode = forcedMode;
-          } else {
-            prefs.mode = normalizeMode(prefs.mode);
-          }
-          prefs.theme = 'minimal';
-          if (!prefs.brand) prefs.brand = DEFAULT_BRAND;
-          try { localStorage.theme = prefs.mode; } catch {}
-          writePrefs(prefs);
-          return prefs;
-        };
-        const sync = (forcedMode) => {
-          const prefs = ensurePrefs(forcedMode);
-          root.setAttribute('data-theme', 'minimal');
-          root.setAttribute('data-theme-lock', 'minimal');
-          root.setAttribute('data-mode', prefs.mode);
-          root.classList.toggle('dark', prefs.mode === 'dark');
-          root.style.setProperty('--crusher-color-brand-primary', prefs.brand || DEFAULT_BRAND);
-        };
-        const patchSwitcher = async () => {
-          await customElements.whenDefined('crusher-style-switcher');
-          const switcher = document.querySelector('crusher-style-switcher');
-          if (!switcher) return;
-          switcher.hideThemes = true;
-          switcher.hideThemeColor = true;
-          switcher.colors = SWITCHER_COLORS;
-          switcher._cacheSwatchColors?.();
-          switcher.requestUpdate?.();
-          await switcher.updateComplete?.catch?.(() => {});
-          const applyShadowFixes = () => {
-            const shadow = switcher.shadowRoot;
-            if (!shadow) return;
-            shadow.querySelectorAll('button').forEach((button) => { button.style.cursor = 'pointer'; });
-            shadow.querySelectorAll('.colors').forEach((row) => {
-              row.style.flexWrap = 'nowrap';
-              row.style.justifyContent = 'flex-start';
-              row.style.gap = '0.45rem';
-            });
-            shadow.querySelectorAll('.swatch').forEach((swatch) => {
-              swatch.style.inlineSize = '1.65rem';
-              swatch.style.blockSize = '1.65rem';
-              swatch.style.flex = '0 0 auto';
-              swatch.style.cursor = 'pointer';
-            });
-          };
-          applyShadowFixes();
-          const originalRequestUpdate = switcher.requestUpdate?.bind(switcher);
-          if (originalRequestUpdate && !switcher.__crusherToolsPatched) {
-            switcher.__crusherToolsPatched = true;
-            switcher.requestUpdate = (...args) => {
-              const result = originalRequestUpdate(...args);
-              requestAnimationFrame(applyShadowFixes);
-              return result;
-            };
-          }
-        };
-        sync();
-        window.addEventListener('crusher:themechange', (event) => sync(event.detail?.mode));
-        document.getElementById('theme-toggle')?.addEventListener('click', () => requestAnimationFrame(() => sync()));
-        patchSwitcher();
-      })();
-    </script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.3/dist/crusher-ui.standalone.esm.js"></script>
+            <div class="tool-mode-row">
+                <button id="comp-btn" type="button" class="tool-mode-btn">Complementary</button>
+                <button id="analog-btn" type="button" class="tool-mode-btn">Analogous</button>
+                <button id="triad-btn" type="button" class="tool-mode-btn">Triadic</button>
+            </div>
+            <div id="palette" class="tool-palette"></div>
+        </section>
+    </main>
+
+    <a href="https://tools.muhammadhassaanjaved.com/" id="hub-bubble" class="crusher-tool-fab" title="View All Tools" target="_blank" rel="noopener noreferrer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7"></rect>
+            <rect x="14" y="3" width="7" height="7"></rect>
+            <rect x="14" y="14" width="7" height="7"></rect>
+            <rect x="3" y="14" width="7" height="7"></rect>
+        </svg>
+    </a>
+
+    <crusher-style-switcher
+      default-theme="minimal"
+      default-brand="#0ea5e9"
+      hide-themes
+      hide-theme-color></crusher-style-switcher>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/crusher-ui-kit@0.1.6/dist/crusher-ui.standalone.esm.js"></script>
+
     <script>
-        const themeToggleBtn = document.getElementById('theme-toggle');
-        const sunIcon = document.getElementById('theme-toggle-sun-icon');
-        const moonIcon = document.getElementById('theme-toggle-moon-icon');
-        const updateIcons = () => { if (document.documentElement.classList.contains('dark')) { sunIcon.classList.remove('hidden'); moonIcon.classList.add('hidden'); } else { sunIcon.classList.add('hidden'); moonIcon.classList.remove('hidden'); } };
-        themeToggleBtn.addEventListener('click', () => { document.documentElement.classList.toggle('dark'); localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; updateIcons(); });
-        updateIcons();
-        
         const hexToHSL = (H) => {
             let r = 0, g = 0, b = 0;
             if (H.length == 4) { r = "0x" + H[1] + H[1]; g = "0x" + H[2] + H[2]; b = "0x" + H[3] + H[3]; }
@@ -193,7 +148,7 @@
             l = +(l * 100).toFixed(1);
             return { h, s, l };
         }
-        
+
         const hslToHex = (h, s, l) => {
             s /= 100; l /= 100;
             let c = (1 - Math.abs(2 * l - 1)) * s, x = c * (1 - Math.abs((h / 60) % 2 - 1)), m = l - c / 2, r = 0, g = 0, b = 0;
@@ -211,17 +166,57 @@
             if (b.length == 1) b = "0" + b;
             return "#" + r + g + b;
         }
-        
+
         const baseColor = document.getElementById('base-color');
         const hexInput = document.getElementById('hex-input');
-        
-        baseColor.addEventListener('input', () => { hexInput.value = baseColor.value; generate('comp'); });
-        hexInput.addEventListener('change', () => { baseColor.value = hexInput.value; generate('comp'); });
-        
+        const paletteEl = document.getElementById('palette');
+        const modeButtons = {
+            comp: document.getElementById('comp-btn'),
+            analog: document.getElementById('analog-btn'),
+            triad: document.getElementById('triad-btn')
+        };
+        let activeType = 'comp';
+
+        baseColor.addEventListener('input', () => { hexInput.value = baseColor.value; generate(activeType); });
+        hexInput.addEventListener('change', () => { baseColor.value = hexInput.value; generate(activeType); });
+
+        function renderSwatches(colors) {
+            while (paletteEl.firstChild) paletteEl.removeChild(paletteEl.firstChild);
+            colors.forEach(c => {
+                const swatch = document.createElement('div');
+                swatch.className = 'tool-swatch';
+                swatch.style.backgroundColor = c;
+                swatch.textContent = c;
+                swatch.addEventListener('click', async () => {
+                    try {
+                        await navigator.clipboard.writeText(c);
+                    } catch {
+                        const dummy = document.createElement('textarea');
+                        document.body.appendChild(dummy);
+                        dummy.value = c;
+                        dummy.select();
+                        document.execCommand('copy');
+                        document.body.removeChild(dummy);
+                    }
+                    swatch.textContent = 'Copied!';
+                    setTimeout(() => { swatch.textContent = c; }, 1000);
+                });
+                paletteEl.appendChild(swatch);
+            });
+        }
+
+        function setActiveMode(type) {
+            activeType = type;
+            Object.entries(modeButtons).forEach(([key, btn]) => {
+                btn.setAttribute('aria-pressed', String(key === type));
+            });
+        }
+
         function generate(type) {
+            setActiveMode(type);
             const {h, s, l} = hexToHSL(baseColor.value);
             const colors = [];
-            if(type === 'comp') {
+            if (type === 'comp') {
                 colors.push(hslToHex(h, s, l));
                 colors.push(hslToHex((h + 180) % 360, s, l));
             } else if (type === 'analog') {
@@ -237,24 +232,14 @@
                 colors.push(hslToHex((h + 60) % 360, s, l));
                 colors.push(hslToHex((h + 180) % 360, s, l));
             }
-            
-            const p = document.getElementById('palette');
-            p.innerHTML = '';
-            colors.forEach(c => {
-                const d = document.createElement('div');
-                d.className = 'swatch h-16 rounded-lg shadow-md cursor-pointer flex items-end justify-center pb-2 font-mono text-xs font-bold text-white drop-shadow-md';
-                d.style.backgroundColor = c;
-                d.innerText = c;
-                d.onclick = () => { navigator.clipboard.writeText(c); d.innerText='Copied!'; setTimeout(()=>d.innerText=c,1000); };
-                p.appendChild(d);
-            });
+            renderSwatches(colors);
         }
-        
+
+        modeButtons.comp.addEventListener('click', () => generate('comp'));
+        modeButtons.analog.addEventListener('click', () => generate('analog'));
+        modeButtons.triad.addEventListener('click', () => generate('triad'));
+
         generate('comp');
-        
-        document.getElementById('comp-btn').onclick = () => generate('comp');
-        document.getElementById('analog-btn').onclick = () => generate('analog');
-        document.getElementById('triad-btn').onclick = () => generate('triad');
     </script>
 </body>
 </html>
